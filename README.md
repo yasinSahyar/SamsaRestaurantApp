@@ -92,28 +92,45 @@ plaintext
 
 
  data
-db.js                  # Database connection and queries
+db.js                 - Database connection and queries
+
 public
-styles.css             # Custom styles for the app
+styles.css           - Custom styles for the app
+
 routes
-auth.js                # Authentication routes (login, registration, forgot password)
-password.js            # Forgot password logic
- reservation.js         # Routes for handling reservations
-cart.js                # Cart-related routes
- admin.js               # Admin routes for managing the system
- user.js                # User routes for viewing user-specific data
+auth.js               - Authentication routes (login, registration, forgot password)
+
+password.js           - Forgot password logic
+
+ reservation.js        - Routes for handling reservations
+ 
+cart.js               - Cart-related routes
+
+ admin.js            - Admin routes for managing the system
+ 
+ user.js              - User routes for viewing user-specific data
+ 
 views
 auth
-forgot-password.ejs   # Forgot password page
+forgot-password.ejs  - Forgot password page
+
  partials
- head.ejs              # Head section for all pages
- nav.ejs               # Navigation bar
-footer.ejs            # Footer section for all pages
- login.ejs                 # Login page
- reset-password.ejs        # Reset password page
- index.js                    # Main entry point for the server
- package.json                 # Project dependencies and scripts
- README.md                    # Project overview and instructions
+ head.ejs             - Head section for all pages
+ 
+ nav.ejs               - Navigation bar
+ 
+footer.ejs           - Footer section for all pages
+
+ login.ejs                - Login page
+ 
+ reset-password.ejs       - Reset password page
+ 
+ index.js                   - Main entry point for the server
+ 
+ package.json                 - Project dependencies and scripts
+ 
+ README.md                 - Project overview and instructions
+ 
 Development
 Running the App
 To run the app locally for development:
