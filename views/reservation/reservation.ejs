@@ -1,4 +1,5 @@
 <!--reservation/ reservation.ejs-->
+<!--reservation.ejs-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +10,25 @@
 
     <div class="container mt-5">
         <h1 class="h3 mb-3">Make a Reservation</h1>
-        <form method="POST" action="/reservation">
+
+        <!-- Display latest reservations for logged-in user -->
+        <% if (reservations && reservations.length > 0) { %>
+            <h2 class="mb-4">Your Recent Reservations</h2>
+            <ul>
+                <% reservations.forEach(reservation => { %>
+                    <li>
+                        <strong>Full Name:</strong> <%= reservation.fullname %> <br>
+                        <strong>Email:</strong> <%= reservation.email %> <br>
+                        <strong>Adults:</strong> <%= reservation.num_adults %>, 
+                        <strong>Children:</strong> <%= reservation.num_children %> <br>
+                        <strong>Reservation Time:</strong> <%= reservation.reservation_time %> <br>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } %>
+
+        <!-- Form for making a reservation -->
+        <form method="POST" action="/reservation" class="mt-4">
             <div class="mb-3">
                 <label for="fullname" class="form-label">Full Name</label>
                 <input type="text" class="form-control" id="fullname" name="fullname" required>

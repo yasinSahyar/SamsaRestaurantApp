@@ -1,13 +1,8 @@
-<!--login.ejs -->
+<!-- login.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <%- include('../partials/head') %>
-    <script>
-        function showMessage(message) {
-            alert(message);
-        }
-    </script>
 </head>
 <body>
     <%- include('../partials/nav') %>
@@ -15,8 +10,21 @@
     <div class="container mt-5">
         <h1 class="h3 text-center mb-3">Login</h1>
 
-        <!-- Login Form -->
-        <form method="POST" action="/login" id="loginForm">
+        <!-- Display Error Message -->
+        <% if (errorMessage) { %>
+            <div class="alert alert-danger">
+                <%= errorMessage %>
+            </div>
+        <% } %>
+
+        <!-- Display Reset Password Success Message -->
+        <% if (resetPasswordMessage) { %>
+            <div class="alert alert-success">
+                <%= resetPasswordMessage %>
+            </div>
+        <% } %>
+
+        <form method="POST" action="/login">
             <div class="mb-3">
                 <label for="userIdentifier" class="form-label">Username or Email</label>
                 <input type="text" class="form-control" id="userIdentifier" name="userIdentifier" required>
@@ -36,16 +44,6 @@
         </p>
     </div>
 
-    <div class="spacer"></div>
     <%- include('../partials/footer') %>
-
-    <!-- Display Registration Success Message -->
-    <% if (typeof registrationSuccess !== 'undefined' && registrationSuccess) { %>
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                showMessage("<%= registrationSuccess %>");
-            });
-        </script>
-    <% } %>
 </body>
 </html>

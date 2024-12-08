@@ -10,23 +10,26 @@ const { addToCart, getCart } = require("../shared/cart");// Use shared cart
 // Fetch products by menu ID
 router.use("/products/menu/:menuid", async function(req, res) {
     const id = req.params.menuid;
-    try {
-        const [products, ] = await db.execute("select * from product where menuid=?", [id]);
+    const successMessage = req.session.successMessage || null; // Handle success message
+    req.session.successMessage = null; // Clear the message after using it
 
-        const [menus, ] = await db.execute("select * from menu");
-       
-        res.render("users/products",{
-            title: "All Menus",
+    try {
+        const [products] = await db.execute("SELECT * FROM product WHERE menuid = ?", [id]);
+        const [menus] = await db.execute("SELECT * FROM menu");
+
+        res.render("users/products", {
+            title: "Menu",
             products: products,
             menus: menus,
-            selectedMenu: id
-        })
-    }
-    catch (err){
-        console.log(err);
+            selectedMenu: id,
+            successMessage, // Pass successMessage to the template
+        });
+    } catch (err) {
+        console.error("Error fetching menu products:", err);
         res.status(500).send("Internal server error");
     }
 });
+
 
 // Fetch product details by product ID
 router.use("/products/:productid", async function (req, res) {
@@ -54,23 +57,27 @@ router.use("/products/:productid", async function (req, res) {
 
 // Fetch all products
 router.use("/products", async function (req, res) {
+    const successMessage = req.session.successMessage || null; // Retrieve message
+    req.session.successMessage = null; // Clear message after use
 
     try {
-        const [products, ] = await db.execute("select * from product where approval=1");
-        const [menus, ] = await db.execute("select * from menu");
+        const [products, ] = await db.execute("SELECT * FROM product WHERE approval=1");
+        const [menus, ] = await db.execute("SELECT * FROM menu");
        
-        res.render("users/products",{
+        res.render("users/products", {
             title: "All Menus",
             products: products,
-            menus: menus, 
+            menus: menus,
             selectedMenu: null,
-        })
+            successMessage, // Pass message to template
+        });
     } 
     catch (err) {
-        console.log(err);
+        console.error(err);
+        res.status(500).send("Internal server error");
     }
-
 });
+
 
 
 // Home route - renders the home page
@@ -103,21 +110,44 @@ router.post("/cart/add", async (req, res) => {
 
         if (!product) return res.status(404).send("Product not found");
 
-        if (!req.session.cart) {
-            req.session.cart = [];
-        }
+        // For logged-in users
+        if (req.session.user) {
+            const userId = req.session.user.id;
 
-        const existingItem = req.session.cart.find((item) => item.id === productId);
+            // Add to cart_items table
+            await db.execute(
+                `INSERT INTO cart_items (user_id, product_id, product_name, quantity, total_price)
+                 VALUES (?, ?, ?, ?, ?)
+                 ON DUPLICATE KEY UPDATE 
+                    quantity = quantity + VALUES(quantity),
+                    total_price = total_price + VALUES(total_price)`,
+                [
+                    userId,
+                    productId,
+                    product.productname,
+                    1, // Increment by 1
+                    parseFloat(product.price),
+                ]
+            );
 
-        if (existingItem) {
-            existingItem.quantity += 1;
         } else {
-            req.session.cart.push({
-                id: productId,
-                name: product.productname,
-                price: parseFloat(product.price), // Ensure price is a number
-                quantity: 1,
-            });
+            // For guest users (session-based cart)
+            if (!req.session.cart) {
+                req.session.cart = [];
+            }
+
+            const existingItem = req.session.cart.find((item) => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                req.session.cart.push({
+                    id: productId,
+                    name: product.productname,
+                    price: parseFloat(product.price), // Ensure price is a number
+                    quantity: 1,
+                });
+            }
         }
 
         res.redirect("/cart");

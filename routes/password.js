@@ -14,21 +14,30 @@ router.post('/forgot-password', async (req, res) => {
     const { email } = req.body;
 
     try {
-        // Check if the user exists (this can also be removed if you want it completely fake)
-        const [users] = await db.execute('SELECT * FROM users WHERE email = ?', [email]);
+        // Check if the user exists
+        const [users] = await db.execute("SELECT * FROM users WHERE email = ?", [email]);
 
-        // Logically, we proceed regardless of whether the email exists or not
-        if (users.length === 0) {
-            // Simulate a positive response
-            return res.send('<script>alert("A reset link has been sent to your email address."); window.location="/login";</script>');
-        }
+        // Simulate sending the reset link regardless of whether the email exists
+        req.session.resetPasswordMessage = `A reset link has been sent to your email address (${email}).`;
 
-        // Simulate success even if the email exists
-        res.send('<script>alert("A reset link has been sent to your email address."); window.location="/login";</script>');
+        // Redirect back to the login page with a success message
+        res.redirect('/login');
     } catch (err) {
-        console.error('Error during forgot password:', err);
-        res.status(500).send('<script>alert("An error occurred. Please try again."); window.location="/forgot-password";</script>');
+        console.error("Error during forgot password:", err);
+        res.status(500).send("An error occurred. Please try again.");
     }
 });
+
+// Serve forgot password page
+router.get('/forgot-password', (req, res) => {
+    res.render('auth/forgot-password', {
+        title: 'Forgot Password',
+        errorMessage: req.session.errorMessage || null,
+    });
+
+    // Clear session messages after rendering
+    req.session.errorMessage = null;
+});
+
 
 module.exports = router;

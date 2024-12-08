@@ -1,5 +1,6 @@
 //index.js
 
+
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
@@ -7,10 +8,12 @@ const crypto = require('crypto');
 const app = express();
 const reservationRouter = require('./routes/reservation');  // Adjust the path as needed
 
+
 const cartRoutes = require("./routes/cart");
 const userRoutes = require("./routes/user");
 const adminRoutes = require("./routes/admin");
 const authRoutes = require("./routes/auth");
+
 
 const secret = crypto.randomBytes(64).toString('hex');
 console.log('Generated Secret Key:', secret); 
@@ -35,6 +38,11 @@ app.use(
         cookie: { secure: false }, // Set to true if using HTTPS
     })
 );
+// Middleware to make user data available in views
+app.use((req, res, next) => {
+    res.locals.user = req.session.user || null; // Attach user session data to res.locals
+    next();
+});
 
 // Register routes
 app.use(authRoutes);
@@ -42,6 +50,7 @@ app.use(userRoutes);
 app.use("/cart", cartRoutes);
 app.use("/admin", adminRoutes);
 app.use('/reservation', reservationRouter);  // This registers the reservation route
+
 
 
 // Serve static files

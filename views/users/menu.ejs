@@ -1,0 +1,19 @@
+<!-- menu.ejs-->
+
+<% if (reservations && reservations.length > 0) { %>
+    <h3>Latest Reservations:</h3>
+    <ul>
+        <% reservations.forEach(reservation => { %>
+            <li>
+                <strong>Name:</strong> <%= reservation.fullname %><br>
+                <strong>Email:</strong> <%= reservation.email %><br>
+                <strong>Adults:</strong> <%= reservation.num_adults %><br>
+                <strong>Children:</strong> <%= reservation.num_children %><br>
+                <strong>Time:</strong> <%= reservation.reservation_time %><br>
+                <strong>Comments:</strong> <%= reservation.comment || "N/A" %>
+            </li>
+        <% }) %>
+    </ul>
+<% } else { %>
+    <p>No recent reservations.</p>
+<% } %>

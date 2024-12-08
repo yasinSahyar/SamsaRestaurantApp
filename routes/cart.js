@@ -12,32 +12,33 @@ function checkCart(req, res, next) {
 }
 
 router.use(checkCart);
-
+// Remove reservation logic from this route
 router.get("/", async (req, res) => {
     try {
         let cartItems = [];
         let totalPrice = 0;
 
         if (req.session.user) {
+            const userId = req.session.user.id;
+
             // Fetch cart items from the database for the logged-in user
             const [dbCartItems] = await db.execute(
-                `SELECT product_id, product_name, quantity, total_price 
+                `SELECT product_id AS id, product_name AS name, quantity, total_price 
                  FROM cart_items 
                  WHERE user_id = ?`,
-                [req.session.user.id]
+                [userId]
             );
 
-            cartItems = dbCartItems.map(item => ({
-                id: item.product_id,
-                name: item.product_name,
+            cartItems = dbCartItems.map((item) => ({
+                id: item.id,
+                name: item.name,
                 quantity: item.quantity,
+                price: parseFloat(item.total_price) / item.quantity, // Derive price per item
                 total_price: parseFloat(item.total_price),
             }));
 
             totalPrice = cartItems.reduce((sum, item) => sum + item.total_price, 0);
-
         } else {
-            // Fetch cart items from the session for guest users
             cartItems = req.session.cart || [];
             totalPrice = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
         }
@@ -47,9 +48,50 @@ router.get("/", async (req, res) => {
             items: cartItems,
             totalPrice,
         });
-    } catch (error) {
-        console.error("Error fetching cart:", error);
-        res.status(500).send("An error occurred while loading the cart.");
+    } catch (err) {
+        console.error("Error fetching cart:", err);
+        res.status(500).send("Internal server error");
+    }
+});
+
+
+router.get("/cart", async (req, res) => {
+    try {
+        let cartItems = [];
+        let totalPrice = 0;
+
+        if (req.session.user) {
+            // Fetch cart items from the database for the logged-in user
+            const [dbCartItems] = await db.execute(
+                `SELECT product_id AS id, product_name AS name, quantity, total_price 
+                 FROM cart_items 
+                 WHERE user_id = ?`,
+                [req.session.user.id]
+            );
+
+            cartItems = dbCartItems.map((item) => ({
+                id: item.id,
+                name: item.name,
+                quantity: item.quantity,
+                price: parseFloat(item.total_price) / item.quantity, // Derive price per item
+                total_price: parseFloat(item.total_price),
+            }));
+
+            totalPrice = cartItems.reduce((sum, item) => sum + item.total_price, 0);
+        } else {
+            // Fetch cart items from session for guest users
+            cartItems = req.session.cart || [];
+            totalPrice = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        }
+
+        res.render("cart/cart", {
+            user: req.session.user || null,
+            items: cartItems,
+            totalPrice,
+        });
+    } catch (err) {
+        console.error("Error fetching cart:", err);
+        res.status(500).send("Internal server error");
     }
 });
 
@@ -115,18 +157,40 @@ router.post('/payment', async (req, res) => {
     }
 
     try {
-        const items = req.session.user
-            ? await db.execute("SELECT * FROM cart_items WHERE user_id = ?", [req.session.user.id]).then(([rows]) => rows)
-            : req.session.cart;
+        let items = [];
+        let totalPrice = 0;
 
-        const totalPrice = items.reduce((sum, item) => sum + (item.total_price || item.price * item.quantity), 0);
+        if (req.session.user) {
+            // Fetch cart items from the database for the logged-in user
+            const [dbCartItems] = await db.execute(
+                "SELECT product_id AS id, product_name AS name, quantity, total_price FROM cart_items WHERE user_id = ?",
+                [req.session.user.id]
+            );
 
+            // Ensure consistent structure with 'price' property
+            items = dbCartItems.map((item) => ({
+                id: item.id,
+                name: item.name,
+                quantity: item.quantity,
+                price: parseFloat(item.total_price) / item.quantity, // Derive price per item
+                total_price: parseFloat(item.total_price),
+            }));
+
+            totalPrice = items.reduce((sum, item) => sum + item.total_price, 0);
+        } else {
+            // Fetch cart items from session for guest users
+            items = req.session.cart || [];
+            totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        }
+
+        // Clear the cart after payment
         if (req.session.user) {
             await db.execute("DELETE FROM cart_items WHERE user_id = ?", [req.session.user.id]);
         } else {
             req.session.cart = [];
         }
 
+        // Render confirmation page
         res.render('cart/confirmation', {
             user: req.session.user || null,
             name,

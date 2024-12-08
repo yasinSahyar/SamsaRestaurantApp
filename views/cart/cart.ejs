@@ -14,7 +14,7 @@
                 <% items.forEach(item => { %>
                     <li>
                         <strong>Name:</strong> <%= item.name %> <br>
-                        <strong>Price:</strong> $<%= item.price.toFixed(2) %> <br>
+                        <strong>Price:</strong> $<%= item.price ? item.price.toFixed(2) : '0.00' %> <br>
                         <strong>Quantity:</strong> <%= item.quantity %> <br>
                         <strong>Total:</strong> $<%= (item.price * item.quantity).toFixed(2) %> <br>
                     </li>

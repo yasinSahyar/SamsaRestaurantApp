@@ -9,6 +9,13 @@
     <%- include('../partials/nav') %>
 
     <div class="container mt-3">
+        <!-- Display success message -->
+        <% if (typeof successMessage !== "undefined" && successMessage) { %>
+            <div class="alert alert-success">
+                <%= successMessage %>
+            </div>
+        <% } %>
+
         <div class="row">
             <div class="col-md-3">
                 <%- include('../partials/menu-menu', { menus, selectedMenu }) %>
@@ -28,10 +35,9 @@
                 <% }) %>
 
                 <!-- Pagination (optional, only if needed) -->
-                <% if (products.filter(b => b.approval).length > 3) { %>
+                <% if (products.filter(p => p.approval).length > 3) { %>
                     <%- include('../partials/paginations') %>
                 <% } %>
-
             </div>
         </div>
     </div>
