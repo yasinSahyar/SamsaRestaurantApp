@@ -7,8 +7,10 @@
 footer {
     margin-top: 80px;
     padding: 20px 0;
-    background-color: #f8f9fa; /* Adjust as needed */
+    background-color: #b8e2e169; 
     text-align: center;
+    font-size: 14px;
+    font-family: 'MyCustomFont', 
 }
 
 /*CSS for the Footer */
@@ -19,7 +21,8 @@ footer {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    padding: 0 20px;
+    padding: 0 30px;
+    gap: 200px;
 }
 
 .footer-column {
@@ -40,7 +43,7 @@ footer {
 
 .social-icons {
     display: flex;
-    gap: 10px;
+    gap: 35px;
     margin-top: 10px;
 }
 
@@ -58,8 +61,8 @@ footer {
 .footer-bottom {
     text-align: center;
     padding: 10px 0;
-    font-size: 0.8em;
-    background-color: #222;
+    font-size: 14px;
+    background-color: #b8e2e169;
 }
 
 
@@ -83,7 +86,8 @@ body {
 
 h1.h3 {
     color: #333;
-    font-family:Arial, Helvetica, sans-serif
+    font-family:Arial, Helvetica, sans-serif;
+    /* font-size: small; */
 }
 
 nav ul {
@@ -96,30 +100,71 @@ nav ul li {
     margin-right: 10px;
 }
 .bg-primary {
-    background-image: url(/public/images/hero.jpg);
     padding: 20px;
     height: 600px;
+    /* width: 100%; */
     background: rgba(55, 0, 3, 0.675);
     background-image:url("./images/hero.jpg") ;
     background-size:cover;
 
     background-repeat: no-repeat;
-    background-position:center;
+    background-position:top;
     display: flex;
 }
 
-.navbar-nav , .navbar, .nav-link  {
-    display: flex; /* Ensure the nav-items are flex children */
-    justify-content: space-between; /* Distribute links */
-    align-items: center; /* Vertically align */
-    gap: 15px; /* Space between items */
-    width: 100%; /* Fill the width */
-    padding: 10px 15px; /* Padding for touch-friendly links */
+.navbar-nav , .nav-link  {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    gap: 22px;     
+    width: 100%; 
+    padding: 10px 15px; 
     text-transform: uppercase;
     margin-bottom: 20px;
     color: #ffffff;
+    margin-left: 75px;
 
 }
+.navbar{
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    gap: 15px;     
+    width: 100%; 
+    padding: 10px 15px; 
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    color: #ffffff;
+    margin-right: 5px;
+   
+}
+/* .navbar {
+    display: flex ;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap:wrap; 
+} */
+
+/* .navbar-nav {
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+} */
+
+/* .navbar-brand {
+    display: flex;
+    align-items: center;
+} */
+
+/* .nav-item {
+    margin-left: 50px; 
+    margin-right: 50px;
+} */
+/* 
+.navbar-nav.me-auto {
+    margin-right: auto; 
+} */
+
 .navbar-collapse {
     justify-content: space-around; /* Center collapsed links */
     gap: 10px; /* Space between links in collapsed mode */
@@ -129,28 +174,26 @@ nav ul li {
     border-radius: 20px;
     border: none;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    background-color: #ffffff;
+    background-color: #f1f1f1;
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+}
+.card-body {
+    flex: 1 1 auto;
+    padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
+    color: var(--bs-card-color);
+    box-sizing: border-box;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    padding-left: 80px;
+    padding-right: 80px;
+    gap: 100px;
+    
+    
 }
 
-
-
-
-/* button.btn-primary {
-    margin-top: 20px;
-    display:block;
-    margin-left: auto;
-    margin-right: auto;
-    background-color:rgb(39, 131, 94);
-    border-radius: 15px;
-    margin-bottom: 30px;
-} */
-
-/* .card-footer {
-    margin-top: 20px;
-    padding: 5px;
-    margin-bottom: 20px;
-} */
- /* Card and Footer */
 .card-footer {
     margin-top: 20px;
     padding: 10px;
@@ -158,6 +201,19 @@ nav ul li {
     font-size: 0.9rem;
 }
 
+@font-face {
+    font-family: 'MyCustomFont'; /* Custom font name */
+    src: url('/fonts/Roboto-Regular.ttf') format('truetype'); /* Path to the font file */
+    font-weight: normal; /* Specify the font weight (optional) */
+    font-style: normal; /* Specify the font style (optional) */
+}
+
+@font-face {
+    font-family: 'MyCustomFont';
+    src: url('/fonts/Roboto-Thin.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
 #loginForm{
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     padding: 20px; 
@@ -174,25 +230,34 @@ button.btn-primary {
     font-size: 1rem;
     border: none;
     cursor: pointer;
+    box-sizing: border-box;
+
 }
 button.btn-primary:hover {
-    background-color: rgb(34, 115, 82);
-}
-.btn-primary {
-    display: block;
-    margin: 10px auto;
-    border-radius: 15px;
-    background-color: rgb(39, 131, 94);
+    background-color: #aae39e;
 }
 
+.btn-primary {
+    --bs-btn-bg: rgb(39, 131, 94);
+    --bs-btn-hover-bg: #aae39e;
+}
+
+
 .card-title a {
-    font-size: 1.2rem;
-    color: black;
-    text-decoration: none;
+    font-size: 1.3rem;
+    color: rgb(92, 42, 22);
+    background-color: rgb(190, 209, 215);
+    --bs-bg-opacity: 1;
+    border-radius: 3px;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+
+
 }
 
 .card-title a:hover {
-    text-decoration: underline;
+    background-color: #aae39e;
+    border-radius: 3px;
+
 }
 input[type="text"], input[type="email"], input[type="password"], input[type="number"], input[type="date"], input[type="time"], textarea {
     font-size: 1rem;
@@ -263,4 +328,91 @@ input[type="text"], input[type="email"], input[type="password"], input[type="num
 
 .cart-form li {
     margin-bottom: 10px;
+}
+
+/* Reservation Section */
+.reservation-section .form-row, 
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Spread items across the row */
+    gap: 35px; /* Space between columns */
+}
+
+.reservation-section .form-group, 
+.form-group {
+    flex: 1; /* Allow equal-width fields */
+    min-width: 200px; /* Prevent fields from shrinking */
+    
+}
+
+/* Ensure textarea spans full width */
+textarea {
+    width: 100%; /* Full width */
+    resize: vertical; /* Allow vertical resizing only */
+}
+
+/* Utility Spacers */
+.spacer {
+    margin-top: 50px;
+}
+
+/* Alerts */
+.alert {
+    font-size: 1rem;
+    margin-bottom: 26px;
+    padding: 13px 0px;
+    display: block;
+    border: none;
+    text-align: center;
+}
+
+.alert-success {
+    --bs-alert-color: var(--bs-success-text-emphasis);
+    --bs-alert-bg: #b8e2e169;
+    /* --bs-alert-border-color: var(--bs-success-border-subtle); */
+    --bs-alert-link-color: var(--bs-success-text-emphasis);
+}
+.bg-success {
+    --bs-bg-opacity: 1;
+    background-color: rgb(190, 209, 215) !important;
+}
+
+.list-group{
+
+    --bs-list-group-disabled-bg: var(--bs-body-bg);
+    --bs-list-group-active-color: #fff;
+    --bs-list-group-active-bg: rgb(190, 209, 215);
+    --bs-list-group-active-border-color: #fff;
+    --bs-list-group-action-hover-bg: #aae39e;
+    --bs-list-group-bg: #f1f1f1;
+
+}    
+
+.row{
+    background-color: #f1f1f1;
+    border-radius: 10px;
+}
+
+/* .col-md-12{
+    width: 100%; 
+    height: 100%; 
+    display: block; 
+    border: none; 
+    border-radius: 0;
+    box-sizing: border-box; 
+    text-align: right; 
+
+} */
+.container.mt-3{
+margin-bottom: -80px;
+}
+
+#map {
+    width: 100%;
+    height: 200px; /* Adjust height as needed */
+    border: 1px solid #ccc;
+    border-radius: 35px;
+
+
 }

@@ -6,27 +6,48 @@
 </head>
 <body>
     <%- include('../partials/nav') %>
-    <div class="container mt-5">
-        <h1 class="h3 text-center mb-3">Register</h1>
-        <form method="POST" action="/register">
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="username" required>
+    <div class="container mt-5 mb-5">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title text-center">Register</h3>
+
+                <!-- Display Error Message -->
+                <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+                    <div class="alert alert-danger">
+                        <%= errorMessage %>
+                    </div>
+                <% } %>
+
+                <!-- Display Registration Success Message -->
+                <% if (typeof successMessage !== 'undefined' && successMessage) { %>
+                    <div class="alert alert-success">
+                        <%= successMessage %>
+                    </div>
+                <% } %>
+
+                <form method="POST" action="/register" class="my-5" id="registerForm">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block mt-3">Register</button>
+                </form>
+
+                <p class="text-center mt-3">
+                    Already have an account? <a href="/login">Login here</a>
+                </p>
             </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Register</button>
-        </form>
-        <p class="mt-3">Already have an account? <a href="/login">Login here</a></p>
+        </div>
     </div>
 
-    <div class="spacer"></div>
     <%- include('../partials/footer') %>
 </body>
 </html>

@@ -8,57 +8,79 @@
 <body>
     <%- include('../partials/nav') %>
 
-    <div class="container mt-5">
-        <h1 class="h3 mb-3">Make a Reservation</h1>
+    <div class="container mt-5 mb-5">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title text-center">Make a Reservation</h3>
 
-        <!-- Display latest reservations for logged-in user -->
-        <% if (reservations && reservations.length > 0) { %>
-            <h2 class="mb-4">Your Recent Reservations</h2>
-            <ul>
-                <% reservations.forEach(reservation => { %>
-                    <li>
-                        <strong>Full Name:</strong> <%= reservation.fullname %> <br>
-                        <strong>Email:</strong> <%= reservation.email %> <br>
-                        <strong>Adults:</strong> <%= reservation.num_adults %>, 
-                        <strong>Children:</strong> <%= reservation.num_children %> <br>
-                        <strong>Reservation Time:</strong> <%= reservation.reservation_time %> <br>
-                    </li>
-                <% }); %>
-            </ul>
-        <% } %>
+                <!-- Display latest reservations for logged-in user -->
+                <% if (reservations && reservations.length > 0) { %>
+                    <h4 class="mb-4">Your Recent Reservations</h4>
+                    <ul class="list-group mb-4">
+                        <% reservations.forEach(reservation => { %>
+                            <li class="list-group-item">
+                                <strong>Full Name:</strong> <%= reservation.fullname %> <br>
+                                <strong>Email:</strong> <%= reservation.email %> <br>
+                                <strong>Adults:</strong> <%= reservation.num_adults %>, 
+                                <strong>Children:</strong> <%= reservation.num_children %> <br>
+                                <strong>Reservation Time:</strong> <%= reservation.reservation_time %> <br>
+                            </li>
+                        <% }); %>
+                    </ul>
+                <% } %>
 
-        <!-- Form for making a reservation -->
-        <form method="POST" action="/reservation" class="mt-4">
-            <div class="mb-3">
-                <label for="fullname" class="form-label">Full Name</label>
-                <input type="text" class="form-control" id="fullname" name="fullname" required>
+                <!-- Form for making a reservation -->
+                <form method="POST" action="/reservation" class="my-5" id="reservationForm">
+                    <!-- First row: Full Name and Email -->
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="fullname">Full Name</label>
+                            <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="email">Email Address</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email address" required>
+                        </div>
+                    </div>
+                    <!-- Second row: Number of Adults and Number of Children -->
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="num_adults">Number of Adults</label>
+                            <input type="number" class="form-control" id="num_adults" name="num_adults" placeholder="Number of Adults" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="num_children">Number of Children</label>
+                            <input type="number" class="form-control" id="num_children" name="num_children" placeholder="Number of Children" value="0">
+                        </div>
+                    </div>
+                    <!-- Third row: Date and Time -->
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="date">Date</label>
+                            <input type="date" class="form-control" id="date" name="date" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="time">Time</label>
+                            <input type="time" class="form-control" id="time" name="time" required>
+                        </div>
+                    </div>
+                   <!-- Additional Comments -->
+                        <div class="form-group textarea-group">
+                            <label for="comment" class="form-label w-100 text-center">Additional Comments</label>
+                            <textarea 
+                                class="form-control" 
+                                id="comment" 
+                                name="comment" 
+                                placeholder="Enter your comments or special requests here..." 
+                                rows="4"
+                            ></textarea>
+                        </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary btn-block">Submit Reservation</button>
+                </form>
             </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email Address</label>
-                <input type="email" class="form-control" id="email" name="email" required>
-            </div>
-            <div class="mb-3">
-                <label for="num_adults" class="form-label">Number of Adults</label>
-                <input type="number" class="form-control" id="num_adults" name="num_adults" required>
-            </div>
-            <div class="mb-3">
-                <label for="num_children" class="form-label">Number of Children</label>
-                <input type="number" class="form-control" id="num_children" name="num_children">
-            </div>
-            <div class="mb-3">
-                <label for="date" class="form-label">Date</label>
-                <input type="date" class="form-control" id="date" name="date" required>
-            </div>
-            <div class="mb-3">
-                <label for="time" class="form-label">Time</label>
-                <input type="time" class="form-control" id="time" name="time" required>
-            </div>
-            <div class="mb-3">
-                <label for="comment" class="form-label">Additional Comments</label>
-                <textarea class="form-control" id="comment" name="comment"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit Reservation</button>
-        </form>
+        </div>
     </div>
 
     <%- include('../partials/footer') %>
